@@ -1,0 +1,17 @@
+swig -I/home/pi/Desktop/IndCV/AprilTagsLib/swig_opencv_lib -I/usr/include -I/usr/local/include -python -c++ AprilTagsLib.i
+
+
+g++ -shared -std=c++11 -fpic AprilTagsLib_wrap.cxx AprilTagsLib.cpp AprilTagsLib.hpp TagDetection.cpp TagDetector.cpp Edge.cpp FloatImage.cpp Gaussian.cpp GLine2D.cpp GLineSegment2D.cpp GrayModel.cpp Homography33.cpp MathUtil.cpp Quad.cpp Segment.cpp TagFamily.cpp UnionFindSimple.cpp $(pkg-config --cflags --libs python3) $(pkg-config --libs opencv) -o _AprilTagsLib.so
+
+
+import cv2
+import numpy as np
+import AprilTagsLib
+import pprint 
+img = cv2.imread("/home/pi/Desktop/test.jpg")
+img2=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) 
+img3=AprilTagsLib.Mat.from_array(img2)
+str=AprilTagsLib.extractTags(4,img3)
+pprint.pprint(str)
+
+
